@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+  pre_build:
+    commands:
+      - npm ci
+  build:
+    commands:
+      - npm test
+      - npm run build
+  post_build:
+    commands:
+      - zip -r application.zip .
+artifacts:
+  files:
+    - "**/*"
+  discard-paths: yes
