@@ -2,8 +2,12 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      nodejs: 18
+    commands:
+      - echo "Installing Node.js version 18 ..."
+      - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+      - . ~/.nvm/nvm.sh
+      - nvm install 18
+      - nvm use 18
   pre_build:
     commands:
       - npm ci
