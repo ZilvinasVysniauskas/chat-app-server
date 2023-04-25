@@ -2,7 +2,7 @@ const express = require('express');
 const exampleRouter = require('./src/routes/exampleRoutes');
 
 const app = express();
-const port = process.env.PORT || 80;
+const port = 8080;
 
 app.use(express.json());
 app.use('', exampleRouter);
