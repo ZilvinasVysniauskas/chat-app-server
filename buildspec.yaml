@@ -16,4 +16,4 @@ phases:
 artifacts:
   files:
     - "**/*"
-  discard-paths: yes
+  discard-paths: yesnvm u
