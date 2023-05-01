@@ -1,0 +1,25 @@
+
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /home/ec2-user/content-chat-server/
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+hooks:
+  
+  InstallDependencies:
+    - location: scripts/install_dependencies.sh
+      timeout: 300
+      runas: root
+
+  ApplicationStart:
+    - location: scripts/application_start.sh
+      timeout: 300
+      runas: root
