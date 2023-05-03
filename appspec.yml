@@ -12,7 +12,7 @@ permissions:
     pattern: "**"
     owner: ec2-user
     group: ec2-user
-  - object: applcation_start.sh
+  - object: scripts/applcation_start.sh
     pattern: "**/*.sh"
     owner: ec2-user
     group: ec2-user
@@ -20,6 +20,6 @@ permissions:
 
 hooks:
   ApplicationStart:
-    - location: application_start.sh
+    - location: scripts/application_start.sh
       timeout: 300
       runas: root
