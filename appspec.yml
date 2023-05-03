@@ -12,7 +12,12 @@ permissions:
     pattern: "**"
     owner: ec2-user
     group: ec2-user
-  - object: scripts/
+  - object: applcation_start.sh
+    pattern: "**/*.sh"
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+  - object: install_dependencies.sh
     pattern: "**/*.sh"
     owner: ec2-user
     group: ec2-user
