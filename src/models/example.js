@@ -1,6 +1,6 @@
 class ExampleModel {
     constructor() {
-        this.name = 'example';
+        this.name = 'example works';
         this.last_name = 'example last name AAAAAAAAAAA';
     }
 }
