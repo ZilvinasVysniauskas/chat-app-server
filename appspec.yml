@@ -1,11 +1,10 @@
-
 version: 0.0
 os: linux
 
 files:
   - source: /
     destination: /home/ec2-user/content-chat-server/
-        overwrite: true
+    overwrite: true
 file_exists_behavior: OVERWRITE
 
 permissions:
@@ -15,7 +14,6 @@ permissions:
     group: ec2-user
 
 hooks:
-  
   InstallDependencies:
     - location: scripts/install_dependencies.sh
       timeout: 300
