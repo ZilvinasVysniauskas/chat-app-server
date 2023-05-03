@@ -13,15 +13,26 @@ permissions:
     pattern: "**"
     owner: ec2-user
     group: ec2-user
+  - object: scripts/
+    pattern: "**/*.sh"
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+
+ - object: scripts/
+        pattern: "**/*.sh"
+        owner: ec2-user
+        group: ec2-user
+        mode: 755
 
 hooks:
   
   InstallDependencies:
-    - location: install_dependencies.sh
+    - location: scripts/install_dependencies.sh
       timeout: 300
       runas: root
 
   ApplicationStart:
-    - location: application_start.sh
+    - location: scripts/application_start.sh
       timeout: 300
       runas: root
