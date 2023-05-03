@@ -4,4 +4,4 @@
 cd /home/ec2-user/content-chat-server
 
 # Reload the application using pm2
-pm2 ls
+pm2 start app.js
