@@ -18,5 +18,4 @@ artifacts:
     - "**/*"
     - appspec.yml
     - scripts/**
-  base-directory: /
-  discard-paths: yes
+  discard-paths: no
