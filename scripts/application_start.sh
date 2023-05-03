@@ -4,4 +4,4 @@
 cd /home/ec2-user/content-chat-server
 
 # Reload the application using pm2
-pm2 reload 0
+pm2 ls
