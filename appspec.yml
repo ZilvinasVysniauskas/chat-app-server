@@ -25,10 +25,10 @@ permissions:
 
 hooks:
   InstallDependencies:
-    - location: scripts/install_dependencies.sh
+    - location: install_dependencies.sh
       timeout: 300
       runas: root
   ApplicationStart:
-    - location: scripts/application_start.sh
+    - location: application_start.sh
       timeout: 300
       runas: root
