@@ -12,8 +12,8 @@ import util from 'util';
 const mySqlPool: Pool = mysql.createPool({
     connectionLimit: 10,
     host: 'chat-app-database-maria.cuj8xpn3teqi.eu-central-1.rds.amazonaws.com',
-    user: 'admin',
-    password: 'Admin12345',
+    user: 'test_user',
+    password: 'Test12345',
     database: 'chat_app',
 });
 
