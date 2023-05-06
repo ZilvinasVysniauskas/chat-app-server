@@ -1,21 +1,21 @@
 import mysql, { Pool } from 'mysql2';
 import util from 'util';
 
-// const mySqlPool: Pool = mysql.createPool({
-//     connectionLimit: 10,
-//     host: process.env.DB_HOST || 'localhost',
-//     user: process.env.DB_USER || 'database_user',
-//     password: process.env.DB_PASSWORD || 'database_password',
-//     database: process.env.DB_NAME || 'database_name',
-// });
-
 const mySqlPool: Pool = mysql.createPool({
     connectionLimit: 10,
-    host: 'chat-app-database-maria.cuj8xpn3teqi.eu-central-1.rds.amazonaws.com',
-    user: 'test_user',
-    password: 'Test12345',
-    database: 'chat_app',
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'database_user',
+    password: process.env.DB_PASSWORD || 'database_password',
+    database: process.env.DB_NAME || 'database_name',
 });
+
+// const mySqlPool: Pool = mysql.createPool({
+//     connectionLimit: 10,
+//     host: 'chat-app-database-maria.cuj8xpn3teqi.eu-central-1.rds.amazonaws.com',
+//     user: 'test_user',
+//     password: 'Test12345',
+//     database: 'chat_app',
+// });
 
 
 mySqlPool.getConnection((err, connection) => {
