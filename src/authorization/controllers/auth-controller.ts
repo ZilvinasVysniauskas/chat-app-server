@@ -1,61 +1,67 @@
-import User, { AuthResponse, IUser, RegisterRequest } from '../models/user';
-import e, { Request, Response } from 'express';
+import { AuthResponse, IUser } from '../models/user';
+import { Request, Response } from 'express';
 import * as userRepository from '../repository/auth-repository'
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { validationResult } from 'express-validator';
+
+const jwtSecret = process.env.JWT_SECRET || 'somesupersecretsecret';
 
 export const createUser = async (req: Request, res: Response) => {
+    const errors = validationResult(req);
 
-    const email = req.body.email;
-    const name = req.body.username;
-    const password = req.body.password;
-    bcrypt.hash(password, 12).then((hashedPassword: string) => {
-      const user: Partial<IUser> = {
-        email: email,
-        username: name,
-        password: hashedPassword,
-      }
-      return userRepository.register(user);
-    }).then((user: IUser) => {
-      res.status(201).json(generateAuthResponse(user.email, user._id));
-    }).catch((error: Error) => {
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ message: 'Validation failed, entered data is incorrect.', errors: errors.array() });
+    }
+
+    const { email, username, password } = req.body;
+
+    try {
+      const user: IUser = await userRepository.register({ email, username, password });
+      return res.status(201).json(generateAuthResponse(user.email, user._id));
+    } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Server error' });
-    });
+      return res.status(500).json({ message: 'Server error' });
+    }
 };
 
 export const login = async (req: Request, res: Response) => {
-  const email = req.body.email;
-  const password = req.body.password;
-  let loadedUser: IUser;
-  User.findOne({ email: email }).then((user: IUser | null) => {
+  const { email, password } = req.body;
+
+  try {
+    const user: IUser | null = await userRepository.findUserByEmail(email);
+
     if (!user) {
-      const error = new Error('A user with this email could not be found.');
-      throw error;
+      throw new Error('A user with this email could not be found.');
     }
-    loadedUser = user;
-    return bcrypt.compare(password, user.password);
-  }).then((isEqual: boolean) => {
+
+    const isEqual = await bcrypt.compare(password, user.password);
+
     if (!isEqual) {
-      const error = new Error('Wrong password!');
-      throw error;
+      throw new Error('Wrong password!');
     }
-    res.status(200).json(generateAuthResponse(loadedUser.email, loadedUser._id));
-  }).catch((error: Error) => {
+
+    res.status(200).json(generateAuthResponse(user.email, user._id));
+  } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
-  });
+  }
 };
 
+
 function generateAuthResponse(email: string, userId: string): AuthResponse {
-  const expiresIn = 3600;
-  const token = jwt.sign(
-    {
-      email: email,
-      userId: userId,
-    },
-    'secret',
-    { expiresIn: expiresIn }
-  );
-  return { token: token, userId: userId, expiresIn: expiresIn };
-};
+  try {
+    const expiresIn = 3600;
+    const token = jwt.sign(
+      {
+        email,
+        userId,
+      },
+      jwtSecret,
+      { expiresIn }
+    );
+    return { token, userId, expiresIn };
+  } catch (error) {
+    throw new Error('Failed to generate authentication token.');
+  }
+}

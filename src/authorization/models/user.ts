@@ -6,6 +6,7 @@ export interface IUser extends mongoose.Document {
     email: string;
 }
 
+
 export interface RegisterRequest {
     username: string;
     password: string;

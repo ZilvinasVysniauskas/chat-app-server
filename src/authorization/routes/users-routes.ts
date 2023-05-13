@@ -1,15 +1,17 @@
 import express from 'express';
 import * as userController from '../controllers/auth-controller';
+import { check } from 'express-validator';
+import { validateLoginRequest, validateRegistrationRequest } from '../middleware/validators';
+import { bcryptHash } from '../middleware/bcrypt';
 
 const router = express.Router();
 
-router.post('/', userController.createUser);
+router.post('/register', [
+    ...validateRegistrationRequest,
+     bcryptHash
+    ],
+     userController.createUser);
 
-try {
-    router.post('/login', userController.login);
-} catch (error) {
-    console.error(error);
-}
-
+router.post('/login', validateLoginRequest, userController.login);
 
 export default router;
