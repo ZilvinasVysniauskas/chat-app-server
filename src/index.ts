@@ -1,7 +1,6 @@
 import express, { Application } from 'express';
-import userRoutes from './authorization/routes/users-routes';
+import userRoutes from './authorization/routes/auth-routes';
 import messagesRoutes from './messages/routes/messages-routes';
-import { execSync } from 'child_process';
 
 const app: Application = express();
 

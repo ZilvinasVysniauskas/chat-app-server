@@ -1,5 +1,5 @@
 import { check } from "express-validator";
-import User from "../models/user";
+import { findUserByEmail } from "../repository/auth-repository";
 
 export const validateEmail = check('email')
     .notEmpty()
@@ -8,13 +8,14 @@ export const validateEmail = check('email')
     .isEmail()
     .withMessage('Please enter a valid email.')
     .custom((value, { req }) => {
-        return User.findOne({ email: value }).then((userDoc) => {
-            if (userDoc) {
-                return Promise.reject('Email address already exists!');
+        return findUserByEmail(value).then(user => {
+            if (user) {
+                return Promise.reject('E-mail already in use');
             }
         });
     })
     .normalizeEmail();
+
 
 export const validateUsername = check('username')
     .notEmpty()
