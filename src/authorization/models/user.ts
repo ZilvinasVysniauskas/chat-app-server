@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ModelSchemaNames } from "../../common/models.const";
 
 export interface IUser extends mongoose.Document {
     username: string;
@@ -47,9 +48,13 @@ const userSchema = new Schema({
         minlength: 5,
         maxlength: 50,
     },
+    chatRooms: [{
+        type: Schema.Types.ObjectId,
+        ref: ModelSchemaNames.CHAT_ROOM,
+    }]
 });
 
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model(ModelSchemaNames.USER, userSchema);
 
 export default User;

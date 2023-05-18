@@ -38,7 +38,7 @@ export const loginUser = async (loginRequest: LoginRequest) => {
 
 function generateAuthResponse(email: string, userId: string): AuthResponse {
   try {
-    const expiresIn = 3600;
+    const expiresIn = 3600 * 10000;
     const token = sign(
       {
         email,

@@ -7,15 +7,16 @@ export const validateEmail = check('email')
     .bail()
     .isEmail()
     .withMessage('Please enter a valid email.')
+    .normalizeEmail();
+
+export const emailExists = check('email')
     .custom((value, { req }) => {
         return findUserByEmail(value).then(user => {
             if (user) {
                 return Promise.reject('E-mail already in use');
             }
         });
-    })
-    .normalizeEmail();
-
+    });
 
 export const validateUsername = check('username')
     .notEmpty()

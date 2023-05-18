@@ -1,11 +1,11 @@
 import express, { Application } from 'express';
-import userRoutes from './authorization/routes/auth-routes';
-import messagesRoutes from './messages/routes/messages-routes';
+import authRoutes from './authorization/routes/auth-routes';
+import chatRoutes from './messages/routes/chat-routes';
 
 const app: Application = express();
 
 app.use(express.json());
-app.use('/users', userRoutes);
-app.use('/messages', messagesRoutes);
+app.use('/auth', authRoutes);
+app.use('/chat-room', chatRoutes);
 
 export default app;
