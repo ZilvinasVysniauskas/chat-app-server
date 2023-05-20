@@ -11,8 +11,8 @@ const fileSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  data: {
-    type: Buffer,
+  fileName: {
+    type: String,
     required: true,
   },
 });

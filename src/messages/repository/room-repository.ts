@@ -1,8 +1,7 @@
-import e from "express";
 import ChatRoom, { AddUserToRoomRequest, IChatRoom, RoomRequest } from "../models/room";
 import Message, { IMessage, MessageRequest } from "../models/message";
 import File, { IFile } from '../models/file';
-
+import { Types } from 'mongoose';
 
 export const createNewRoom = async (room: RoomRequest): Promise<IChatRoom> => {
     return new ChatRoom(room).save();
@@ -17,19 +16,28 @@ export const addMessageToRoom = async (roomId: string, messageId: string): Promi
 }
 
 export const getRoomById = async (roomId: string): Promise<IChatRoom | null> => {
-    return ChatRoom.findById(roomId).populate('messages');
+    return ChatRoom.findById(roomId).select('-messages');
 }
 
 export const saveMessage = async (request: MessageRequest): Promise<IMessage> => {
-    return Message.create(request);
+    const optionalFile = request.savedFileId ? new Types.ObjectId(request.savedFileId) : null;
+    return Message.create({
+        message: request.message,
+        sender: request.sender,
+        file: optionalFile
+    });
 }
 
-export const saveFile = async (content: Buffer, contentType: string): Promise<string> => {
-  const file = new File({ contentType, data: content });
-  const savedFile = await file.save();
-  return savedFile._id;
-};
-
-export const getFileById = async (fileId: string): Promise<IFile | null> => {
-  return File.findById(fileId);
+export const getRoomWithMessagesById = async (roomId: string, limit: number, offset: number): Promise<IChatRoom | null> => {
+    return ChatRoom.findById(roomId).select('par').populate({
+        path: 'messages',
+        options: {
+          skip: offset,
+          limit: limit,
+          sort: { 'createdAt': -1 }
+        },
+        populate: {
+          path: 'file',
+        },
+      });
 };

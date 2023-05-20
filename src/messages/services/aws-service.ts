@@ -26,6 +26,7 @@ export const generatePresignedUrl = async (request: AwsUrlRequest) => {
 };
 
 export const getFileUrl = async (fileName: string) => {
+  console.log(fileName);
     const command = new GetObjectCommand({
       Bucket: bucketName,
       Key: fileName,

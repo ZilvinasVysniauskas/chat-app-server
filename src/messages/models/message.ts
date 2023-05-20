@@ -10,15 +10,14 @@ export interface IMessage extends Document {
 
 export interface MessageRequest {
   roomId: string;
-  type: string;
-  content: any;
+  message: string;
+  savedFileId?: string;
   sender: string;
 }
 
 const messageSchema: Schema = new Schema({
-  content: {
+  message: {
     type: String,
-    required: true
   },
   sender: {
     type: Schema.Types.ObjectId,

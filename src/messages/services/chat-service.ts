@@ -1,11 +1,11 @@
-import e from "express";
+import { messagesToMessagesResponse } from "../mappers/message-mapper";
 import { MessageRequest } from "../models/message";
 import { AddUserToRoomRequest, IChatRoom, RoomRequest } from "../models/room";
-import * as chatRepository from '../repository/chat-repository';
+import * as roomRepository from '../repository/room-repository';
 
 export const createNewRoom = async (request: RoomRequest): Promise<IChatRoom> => {
     try {
-        return await chatRepository.createNewRoom(request);
+        return await roomRepository.createNewRoom(request);
     } catch (error) {
         console.error(error);
         throw new Error('Failed to create room.');
@@ -14,7 +14,7 @@ export const createNewRoom = async (request: RoomRequest): Promise<IChatRoom> =>
 
 export const addUserToRoom = async (request: AddUserToRoomRequest): Promise<IChatRoom> => {
     try {
-        const response: IChatRoom | null = await chatRepository.addUserToRoom(request);
+        const response: IChatRoom | null = await roomRepository.addUserToRoom(request);
         if (!response) {
             throw new Error('Room not found.');
         }
@@ -27,9 +27,9 @@ export const addUserToRoom = async (request: AddUserToRoomRequest): Promise<ICha
 
 export const saveMessage = async (request: MessageRequest): Promise<IChatRoom> => {
     try {
-        const message = await chatRepository.saveMessage(request);
+        const message = await roomRepository.saveMessage(request);
 
-        const response: IChatRoom | null = await chatRepository.addMessageToRoom(request.roomId, message._id);
+        const response: IChatRoom | null = await roomRepository.addMessageToRoom(request.roomId, message._id);
 
         if (!response) {
             throw new Error('Room not found.');
@@ -44,7 +44,7 @@ export const saveMessage = async (request: MessageRequest): Promise<IChatRoom> =
 
 export const getRoomById = async (roomId: string): Promise<IChatRoom> => {
     try {
-        const response: IChatRoom | null = await chatRepository.getRoomById(roomId);
+        const response: IChatRoom | null = await roomRepository.getRoomById(roomId);
         if (!response) {
             throw new Error('Room not found.');
         }
@@ -52,5 +52,18 @@ export const getRoomById = async (roomId: string): Promise<IChatRoom> => {
     } catch (error) {
         console.error(error);
         throw new Error('Failed to get room.');
+    }
+}
+
+export const getMessagesByRoomId = async (roomId: string, limit: number, offset: number): Promise<any> => {
+    try {
+        const room = await roomRepository.getRoomWithMessagesById(roomId, limit, offset);
+        if (!room) {
+            throw new Error('Room not found.');
+        }
+        return messagesToMessagesResponse(room.messages);
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to get messages.');
     }
 }

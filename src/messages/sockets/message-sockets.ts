@@ -14,15 +14,20 @@ export function configureMessageSockets(io: Server) {
 
         socket.on('sendToRoom', (messageRequest: MessageRequest) => {
             if (isAuthorized(socket)) {
-                saveMessage({
+                try {
+
+                    saveMessage({
                         roomId: messageRequest.roomId,
-                        content: messageRequest.content,
+                        message: messageRequest.message,
                         sender: messageRequest.sender,
-                        type: messageRequest.type
+                        savedFileId: messageRequest.savedFileId
                     });
-                socket.to(messageRequest.roomId).emit('message', messageRequest.content);
-                console.log('message sent to room ' + messageRequest.roomId);
-                console.log(messageRequest);
+                    socket.to(messageRequest.roomId).emit('message', messageRequest.message);
+                    console.log('message sent to room ' + messageRequest.roomId);
+                    console.log(messageRequest);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         });
     });
