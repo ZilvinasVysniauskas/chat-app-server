@@ -1,6 +1,6 @@
 import { messagesToMessagesResponse } from "../mappers/message-mapper";
-import { MessageRequest } from "../models/message";
-import { AddUserToRoomRequest, IChatRoom, RoomRequest } from "../models/room";
+import { IMessage, MessageRequest, MessageResponse } from "../models/message";
+import { AddUserToRoomRequest, IChatRoom, RoomRequest } from "../models/chat-room";
 import * as roomRepository from '../repository/room-repository';
 
 export const createNewRoom = async (request: RoomRequest): Promise<IChatRoom> => {
@@ -55,9 +55,9 @@ export const getRoomById = async (roomId: string): Promise<IChatRoom> => {
     }
 }
 
-export const getMessagesByRoomId = async (roomId: string, limit: number, offset: number): Promise<any> => {
+export const getMessagesByRoomId = async (roomId: string, limit: number, offset: number): Promise<MessageResponse[]> => {
     try {
-        const room = await roomRepository.getRoomWithMessagesById(roomId, limit, offset);
+        const room: IChatRoom | null = await roomRepository.getRoomWithMessagesById(roomId, limit, offset);
         if (!room) {
             throw new Error('Room not found.');
         }

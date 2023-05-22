@@ -1,6 +1,5 @@
-import ChatRoom, { AddUserToRoomRequest, IChatRoom, RoomRequest } from "../models/room";
+import ChatRoom, { AddUserToRoomRequest, IChatRoom, RoomRequest } from "../models/chat-room";
 import Message, { IMessage, MessageRequest } from "../models/message";
-import File, { IFile } from '../models/file';
 import { Types } from 'mongoose';
 
 export const createNewRoom = async (room: RoomRequest): Promise<IChatRoom> => {
@@ -34,7 +33,7 @@ export const getRoomWithMessagesById = async (roomId: string, limit: number, off
         options: {
           skip: offset,
           limit: limit,
-          sort: { 'createdAt': -1 }
+          sort: { 'timestamp': -1 }
         },
         populate: {
           path: 'file',

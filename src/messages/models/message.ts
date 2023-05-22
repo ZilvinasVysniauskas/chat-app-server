@@ -13,6 +13,18 @@ export interface MessageRequest {
   message: string;
   savedFileId?: string;
   sender: string;
+  fileKey?: string | null;
+}
+
+export interface MessageResponse {
+  message: string | null;
+  file?: FileData | null;
+  createdAt: Date;
+}
+
+export interface FileData {
+  fileName: string;
+  url: string;
 }
 
 const messageSchema: Schema = new Schema({

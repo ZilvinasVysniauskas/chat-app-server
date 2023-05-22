@@ -2,23 +2,33 @@ import express from 'express';
 import isAuth from '../../common/middleware/is-auth';
 import * as chatController from '../controllers/chat-controller';
 import * as fileController from '../controllers/file-controller';
-import { validateGetRoomRequest } from '../middleware/validators';
+import { validate } from 'class-validator';
+import { validateRequestBody, validateRequestQuery } from '../../common/middleware/joi-validate';
+import { addUserToRoomSchema, createRoomSchema, getMessagesSchema } from '../validators/validators';
 
 
 const router = express.Router();
 
-router.post('/', isAuth, chatController.createRoom);
+router.post('/',[
+    isAuth,
+    validateRequestBody(createRoomSchema)
+], chatController.createRoom);
 
-router.post('/:roomId/add-user', isAuth, chatController.addUserToRoom);
+router.post('/:roomId/add-user', [
+    isAuth,
+    validateRequestBody(addUserToRoomSchema)
+], chatController.addUserToRoom);
 
 router.get('/:roomId', isAuth, chatController.getRoom);
 
 router.get('/:roomId/messages', [
-    isAuth, 
-    validateGetRoomRequest
+    isAuth,
+    validateRequestQuery(getMessagesSchema)
 ], chatController.getMessagesByRoomId);
 
-router.post('/files', isAuth, fileController.saveFileMetadataAndGetUrl);
+router.post('/files', [
+    isAuth,
+], fileController.saveFileMetadataAndGetUrl);
 
 
 export default router;

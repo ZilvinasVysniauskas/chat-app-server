@@ -1,10 +1,10 @@
 
-import { IFile } from '../models/file';
+import { FileRequest, IFile } from '../models/file';
 import * as fileRepository from '../repository/file-repository';
 
-export const saveFileInfo = async (fileName: string, contentType: string): Promise<IFile> => {
+export const saveFileInfo = async (fileRequest: FileRequest): Promise<IFile> => {
     try {
-        return await fileRepository.saveFileInfo(fileName, contentType);
+        return await fileRepository.saveFileInfo(fileRequest);
     } catch (error) {
         console.error(error);
         throw new Error('Failed to save file.');

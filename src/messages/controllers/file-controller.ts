@@ -5,7 +5,10 @@ import { Request, Response } from 'express';
 
 export const saveFileMetadataAndGetUrl = async (req: Request, res: Response) => {
     try {
-        const savedFileInfo = await fileService.saveFileInfo(req.body.fileName, req.body.contentType);
+        const savedFileInfo = await fileService.saveFileInfo({
+            fileName: req.body.fileName,
+            contentType: req.body.contentType,
+        });
         const url = await awsService.generatePresignedUrl(
             {
                 fileName: savedFileInfo._id.toString() + '.' + savedFileInfo.contentType.split('/')[1],
