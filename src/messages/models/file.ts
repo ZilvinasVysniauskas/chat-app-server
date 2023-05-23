@@ -6,13 +6,18 @@ export interface IFile extends Document {
   data: Buffer;
 }
 
+export interface FileRequest {
+  contentType: string;
+  fileName: string;
+}
+
 const fileSchema: Schema = new Schema({
   contentType: {
     type: String,
     required: true,
   },
-  data: {
-    type: Buffer,
+  fileName: {
+    type: String,
     required: true,
   },
 });

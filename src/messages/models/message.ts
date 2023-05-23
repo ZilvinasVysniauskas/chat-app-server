@@ -10,15 +10,26 @@ export interface IMessage extends Document {
 
 export interface MessageRequest {
   roomId: string;
-  type: string;
-  content: any;
+  message: string;
+  savedFileId?: string;
   sender: string;
+  fileKey?: string | null;
+}
+
+export interface MessageResponse {
+  message: string | null;
+  file?: FileData | null;
+  createdAt: Date;
+}
+
+export interface FileData {
+  fileName: string;
+  url: string;
 }
 
 const messageSchema: Schema = new Schema({
-  content: {
+  message: {
     type: String,
-    required: true
   },
   sender: {
     type: Schema.Types.ObjectId,

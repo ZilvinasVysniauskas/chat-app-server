@@ -1,11 +1,12 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import { ModelSchemaNames } from '../../common/models.const';
+import { IMessage } from './message';
 
 export interface IChatRoom extends Document {
   name: string;
   description: string;
   participants: string[];
-  messages: string[];
+  messages: IMessage[];
 }
 
 export interface RoomRequest {

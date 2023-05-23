@@ -2,15 +2,11 @@ import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import { loginUser, registerUser } from '../service/auth-service';
 import { IUser, LoginRequest, RegisterRequest } from '../models/user';
+import Joi from 'joi';
+
 
 
 export const createUser = async (req: Request, res: Response) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ message: 'Validation failed, entered data is incorrect.', errors: errors.array() });
-  }
-
   try {
     const authResponse = await registerUser({
       email: req.body.email,
@@ -25,16 +21,7 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ message: 'Validation failed, entered data is incorrect.', errors: errors.array() });
-  }
-
-
   try {
-    
-
     const authResponse = await loginUser({
       email: req.body.email,
       password: req.body.password,

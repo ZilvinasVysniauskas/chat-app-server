@@ -1,22 +1,18 @@
 import express from 'express';
 import * as userController from '../controllers/auth-controller';
 import { bcryptHash } from '../middleware/bcrypt';
-import { emailExists, validateEmail, validatePassword, validatePasswordRepeat, validateUsername } from '../middleware/validators';
+import { validateRequestBody, validateRequestBodyAsync } from '../../common/middleware/joi-validate';
+import { loginSchema, registrationSchema } from '../validators/validators';
 
 const router = express.Router();
 
 router.post('/register', [
-    validateEmail,
-    emailExists,
-    validatePassword,
-    validatePasswordRepeat,
-    validateUsername,
+    validateRequestBodyAsync(registrationSchema),
     bcryptHash
 ], userController.createUser);
 
 router.post('/login', [
-    validateEmail,
-    validatePassword
+    validateRequestBody(loginSchema)
 ], userController.login);
 
 export default router;
