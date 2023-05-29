@@ -24,7 +24,6 @@ export default (req: AuthenticatedRequest, res: Response, next: NextFunction) =>
 };
 
 export function isAuthorized(socket: Socket): boolean {
-  return true;
   console.log(socket.handshake.query);
   const token = socket.handshake.query.token as string;
   console.log('token: ' + token);

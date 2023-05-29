@@ -25,7 +25,7 @@ export const addUserToRoom = async (request: AddUserToRoomRequest): Promise<ICha
     }
 };
 
-export const saveMessage = async (request: MessageRequest): Promise<IChatRoom> => {
+export const saveMessage = async (request: MessageRequest): Promise<IMessage> => {
     try {
         const message = await roomRepository.saveMessage(request);
 
@@ -35,7 +35,7 @@ export const saveMessage = async (request: MessageRequest): Promise<IChatRoom> =
             throw new Error('Room not found.');
         }
         
-        return response;
+        return message;
     } catch (error) {
         console.error(error);
         throw new Error('Failed to add message to room.');

@@ -27,7 +27,7 @@ export const addUserToRoomSchema = Joi.object({
 
 export const messageRequestSchema = Joi.object({
     roomId: Joi.string().required(),
-    message: Joi.string().min(1).allow(null).when('savedFileId', {
+    message: Joi.string().min(1).allow(null).allow('').when('savedFileId', {
         is: Joi.exist(),
         then: Joi.optional(),
         otherwise: Joi.required(),

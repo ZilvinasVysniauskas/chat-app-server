@@ -47,7 +47,7 @@ export const addUserToRoom = async (req: Request, res: Response) => {
 
 export const getRoom = async (req: Request, res: Response) => {
     try {
-        const room = await chatService.getRoomById(req.params.roomId);
+        const room = await chatService.getRoomById(req.query.roomId as string);
         return res.status(200).json(room);
     } catch (error) {
         console.error(error);

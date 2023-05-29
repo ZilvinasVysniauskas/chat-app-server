@@ -2,10 +2,10 @@ import mongoose, { Schema, Document } from 'mongoose';
 import { ModelSchemaNames } from '../../common/models.const';
 
 export interface IMessage extends Document {
-  content: string;
+  message: string;
   sender: string;
   timestamp: Date;
-  room: string;
+  file: string;
 }
 
 export interface MessageRequest {
@@ -17,9 +17,11 @@ export interface MessageRequest {
 }
 
 export interface MessageResponse {
-  message: string | null;
+  id: string;
+  text: string | null;
   file?: FileData | null;
   createdAt: Date;
+  sender: string;
 }
 
 export interface FileData {

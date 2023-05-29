@@ -9,7 +9,7 @@ import { addUserToRoomSchema, createRoomSchema, getMessagesSchema } from '../val
 
 const router = express.Router();
 
-router.post('/',[
+router.post('/', [
     isAuth,
     validateRequestBody(createRoomSchema)
 ], chatController.createRoom);
@@ -19,7 +19,9 @@ router.post('/:roomId/add-user', [
     validateRequestBody(addUserToRoomSchema)
 ], chatController.addUserToRoom);
 
-router.get('/:roomId', isAuth, chatController.getRoom);
+router.get('/',
+    isAuth,
+    chatController.getRoom);
 
 router.get('/:roomId/messages', [
     isAuth,
