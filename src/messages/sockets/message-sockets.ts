@@ -8,14 +8,14 @@ import { Sockets } from '../constants';
 
 
 export function configureMessageSockets(io: Server) {
-    io.on(Sockets.connect, (socket: Socket) => {
+    io.on(Sockets.CONNECT, (socket: Socket) => {
 
-        socket.on(Sockets.joinRoom, (roomName: string) => {
+        socket.on(Sockets.JOIN_ROOM, (roomName: string) => {
             socket.join(roomName);
             console.log('joined room ' + roomName);
         });
 
-        socket.on(Sockets.message, async (messageRequest: MessageRequest) => {
+        socket.on(Sockets.MESSAGE, async (messageRequest: MessageRequest) => {
             if (isAuthorized(socket)) {
                 try {
                     const message: MessageRequest = {
@@ -44,7 +44,7 @@ export function configureMessageSockets(io: Server) {
                             },
                             createdAt: new Date()
                         }
-                        socket.to(messageRequest.roomId).emit(Sockets.message, messageToSend);
+                        socket.to(messageRequest.roomId).emit(Sockets.MESSAGE, messageToSend);
                         return;
                     }
                     const messageToSend: MessageResponse = {
@@ -53,7 +53,7 @@ export function configureMessageSockets(io: Server) {
                         text: savedMessage.message,
                         createdAt: new Date()
                     }
-                    socket.to(messageRequest.roomId).emit(Sockets.message, messageToSend);
+                    socket.to(messageRequest.roomId).emit(Sockets.MESSAGE, messageToSend);
                     console.log('message sent', messageToSend);
                 } catch (error) {
                     console.error(error);
@@ -61,14 +61,20 @@ export function configureMessageSockets(io: Server) {
             }
         });
 
-        socket.on(Sockets.videoState, (videoState: string) => {
+        socket.on(Sockets.VIDEO_STATE, (videoState: string) => {
             console.log(videoState);
-            socket.broadcast.to('646907ab6c3802ad2cc4ccb9').emit(Sockets.videoState, videoState);
+            socket.broadcast.to('646907ab6c3802ad2cc4ccb9').emit(Sockets.VIDEO_STATE, videoState);
         });
 
-        socket.on(Sockets.videoTimestamp, (videoTimestamp: number) => {
+        socket.on(Sockets.VIDEO_TIMESTAMP, (videoTimestamp: number) => {
             console.log(videoTimestamp);
-            socket.to('646907ab6c3802ad2cc4ccb9').emit(Sockets.videoTimestamp, videoTimestamp);
+            socket.to('646907ab6c3802ad2cc4ccb9').emit(Sockets.VIDEO_TIMESTAMP, videoTimestamp);
         });
+
+        socket.on(Sockets.VIDEO_ID, (videoId: string) => {
+            console.log(videoId);
+            socket.to('646907ab6c3802ad2cc4ccb9').emit(Sockets.VIDEO_ID, videoId);
+        });
+
     });
 }
