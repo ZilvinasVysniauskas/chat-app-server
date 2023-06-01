@@ -3,7 +3,6 @@ import Joi from "joi";
 export const getMessagesSchema = Joi.object({
     limit: Joi.number()
         .min(1)
-        .max(100)
         .required(),
     offset: Joi.number()
         .min(0)

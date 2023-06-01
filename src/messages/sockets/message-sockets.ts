@@ -21,7 +21,7 @@ export function configureMessageSockets(io: Server) {
                     const message: MessageRequest = {
                         roomId: messageRequest.roomId,
                         message: messageRequest.message,
-                        sender: messageRequest.sender ?? '646914bdea206f829f7212a7',
+                        sender: messageRequest.sender,
                         savedFileId: messageRequest.savedFileId,
                         fileKey: messageRequest.fileKey,
                     }
